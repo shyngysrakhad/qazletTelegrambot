@@ -2,10 +2,10 @@ import telebot
 import requests
 import json
 
-api = 'trnsl.1.1.20200315T093820Z.ee6bad7b49c9840f.e1ab8887d49bbc5cbedecfea656325b40f157e4a'
+api = 'AIzaSyDCY7vAdpR1OaXvQ2E-l0ycWz0uCpi1YBE'
 token = '454097555:AAEKr150Vp4LBWpvJjmNHfLwNnj9S4jLe1A'
 bot = telebot.TeleBot(token)
-url = 'https://translate.yandex.net/api/v1.5/tr.json/translate'
+url = 'https://translation.googleapis.com/language/translate/v2'
 
 
 def is_ascii(s):
@@ -15,10 +15,10 @@ def is_ascii(s):
 @bot.message_handler(content_types=["text"])
 def repeat_all_messages(message):
     usertext = message.text
-    myObj = {'key': api, 'text': usertext, 'lang': 'en-kk'}
+    myObj = {'key': api, 'q': usertext, 'target': 'kk', 'format': 'text'}
 
     x = requests.post(url, data=myObj)
-    response = json.loads(x.text)["text"][0]
+    response = json.loads(x.text)["data"]["translations"][0]["translatedText"]
     final = response.replace("я", "ıa").replace("э", "e").replace("Э", "E").replace("Я", "Ia").replace("ю",
                                                                                                        "ıý").replace(
         "Ю", "Iý").replace("ц",
